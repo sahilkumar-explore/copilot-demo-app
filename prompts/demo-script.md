@@ -10,11 +10,11 @@
 - **.NET Web API**:
   - Prompt: "Create a new .NET 8 Web API project named 'backend-dotnet' in the current directory. Include OpenAPI support."
 - **Java Spring Boot**:
-  - Prompt: "Scaffold a Spring Boot 3.2 project named 'backend-java' with 'web' and 'actuator' dependencies using Maven."
+  - Prompt: "Create a Spring Boot 3.5.9 project named 'backend-java' with 'web' and 'actuator' dependencies with Maven wrapper"
 - **Python FastAPI (uv)**:
   - Prompt: "Initialize a new Python project named 'backend-python' using 'uv'. Add 'fastapi' and 'uvicorn' as dependencies."
 - **Frontend (React/Vite)**:
-  - Prompt: "Create a new React project named 'frontend' using Vite with TypeScript."
+  - Prompt: "Create a new React project named 'frontend-react' using Vite with TypeScript."
 
 ### 2. Explore Structure
 
@@ -44,8 +44,8 @@
 - **Python**:
   - Open `main.py`.
   - Prompt: "Define a `Product` Pydantic model. Implement `GET /products` and `POST /products` endpoints using FastAPI and a global list."
-- **Frontend**:
-  - Open `frontend/src/App.jsx`.
+- **Frontend (frontend-react)**:
+  - Open `frontend-react/src/App.jsx`.
   - Prompt: "Create a functional component that fetches products from `http://localhost:8080/products` using `useEffect` and displays them in a list. Handle loading and error states."
 
 ## Phase 3: Testing & Code Review

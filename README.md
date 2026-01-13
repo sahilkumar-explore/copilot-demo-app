@@ -1,36 +1,54 @@
-# copilot-demo-app
+# Copilot Demo App ✅
 
-📦 **Multi-service demo app** — This repository contains multiple example services showcasing different technology stacks and a simple React frontend:
+## Project overview
 
-- **backend-dotnet** — C# Web API (.NET 8)
-- **backend-java** — Spring Boot (Java, Maven)
-- **backend-python** — FastAPI (Python)
-- **frontend** — React + Vite (JavaScript)
-- **prompts** — notes and scripts for the demo
+This repository is a small multi-service demo showing different technology stacks and a React frontend:
 
----
+- **backend-dotnet** — minimal .NET 8 Web API (binds to `http://localhost:5000` by default)
+- **backend-java** — Spring Boot app (configured to use `server.port=8080`)
+- **backend-python** — FastAPI app (runs on `http://localhost:8000` via Uvicorn)
+- **frontend-react** — Vite + React app (dev server at `http://localhost:5173`)
+- **prompts** — demo scripts and notes
 
-## Prerequisites ✅
-
-Make sure you have these installed locally:
-
-- .NET SDK 8.x (dotnet)
-- Java JDK 11+ and Maven
-- Python 3.10+ and pip (or a virtual environment)
-- Node.js 18+ and npm or Yarn
-- Optional: Docker & docker-compose
+The README below explains how to build, run and test each service locally.
 
 ---
 
-## Per-service quick start 🔧
+## Prerequisites 🔧
 
-All commands assume you run them from the workspace root (project root). Use separate terminals for each service.
+Install the appropriate runtimes & tools for the services you plan to run locally:
 
-### .NET (backend-dotnet)
+- Node.js (v18+)
+- npm (or Yarn)
+- Java JDK 17+ and Maven
+- .NET 8 SDK
+- Python 3.10+ and pip and optionally `virtualenv`
+- Optional: Docker (if you prefer containers)
 
-Folder: `backend-dotnet`
+---
 
-Run:
+## Directory structure 📁
+
+- `backend-dotnet/` — .NET 8 minimal API
+- `backend-java/` — Spring Boot (Maven)
+- `backend-python/` — FastAPI (pyproject.toml)
+- `frontend-react/` — Vite + React
+- `prompts/` — demo scripts and notes
+
+---
+
+## Setup & quick start 💡
+
+Clone and open the repo:
+
+```bash
+git clone <repo-url>
+cd copilot-demo-app
+```
+
+Run each service in its own terminal for easier development.
+
+### backend-dotnet
 
 ```bash
 cd backend-dotnet
@@ -38,123 +56,90 @@ cd backend-dotnet
 dotnet restore
 # run the API
 dotnet run
-```
-
-Default dev URL: http://localhost:5000/ (see `Program.cs` for current binding)
-
-Quick check:
-
-```bash
-curl http://localhost:5000/
-```
-
-Build & publish:
-
-```bash
-cd backend-dotnet
+# build for production
 dotnet build -c Release
-dotnet publish -c Release -o out
-# run the published app
-dotnet out/backend-dotnet.dll
 ```
 
----
+- Default URL: `http://localhost:5000`
 
-### Java Spring Boot (backend-java)
-
-Folder: `backend-java`
-
-Run:
+### backend-java
 
 ```bash
 cd backend-java
 # run via Maven
 mvn spring-boot:run
-```
-
-Or build a JAR and run:
-
-```bash
-cd backend-java
+# or build and run the jar
 mvn package
 java -jar target/*.jar
 ```
 
-Default dev URL: http://localhost:8080/
+- Default URL: `http://localhost:8080`
 
-Quick check:
+### backend-python
 
-```bash
-curl http://localhost:8080/
-```
-
----
-
-### Python FastAPI (backend-python)
-
-Folder: `backend-python`
-
-Recommended: create and activate a virtual environment, then install the project (using the `pyproject.toml`) so dependencies are installed automatically.
-
-````bash
 ```bash
 cd backend-python
-# create a virtual environment with uv
-uv venv
-source .venv/bin/activate    # macOS / Linux
-# install dependencies using uv
-uv sync
+python -m venv .venv
+source .venv/bin/activate   # macOS/Linux
+pip install -U pip
+# install dependencies (use your chosen tool; the repo provides pyproject.toml)
+pip install fastapi uvicorn
+# run dev server
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+# or run the module directly
+python main.py
+```
 
-# run with uvicorn (recommended):
-uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
-# or run directly (uses uvicorn.run in main.py):
-uv run python main.py
-````
+- Default URL: `http://localhost:8000`
 
-````
-
-Default dev URL: http://localhost:8000/
-
-Quick check:
+### frontend-react
 
 ```bash
-curl http://localhost:8000/
-````
-
----
-
-### Frontend (React + Vite)
-
-Folder: `frontend`
-
-Run:
-
-```bash
-cd frontend
+cd frontend-react
 npm install
 npm run dev
 ```
 
-Vite dev server prints the local URL (e.g., http://localhost:5173/). To build for production:
-
-```bash
-npm run build
-# serve the built files using any static server
-npx serve dist
-```
+- Vite dev server is typically at `http://localhost:5173`
+- Build for production: `npm run build`
 
 ---
 
-## Run everything together
+## Testing 🧪
 
-You can open multiple terminal tabs and run each service using the commands above.
+There are no test suites included by default, but these are the common commands you would run after adding tests:
+
+- .NET: `dotnet test` (run in the test project folder)
+- Java: `mvn test` (from `backend-java/`)
+- Python: `pytest` (from `backend-python/`)
+- Frontend (frontend-react): `npm test` (if you add test scripts)
+
+---
+
+## Useful commands & checks ⚡
+
+- Check service roots with `curl` or a browser:
+  - `.NET` → `curl http://localhost:5000/`
+  - `Java` → `curl http://localhost:8080/`
+  - `Python` → `curl http://localhost:8000/`
+- If a port is in use, change it in the service config (see `Program.cs`, `application.properties`, or `uvicorn` flags).
+
+> Tip: Use independent terminals or a process manager (or Docker Compose) to run all services concurrently during development.
 
 ---
 
 ## Troubleshooting & tips ⚠️
 
-- If ports conflict, change the port in each app (see each service's config file).
-- Use the logs printed by each service for debugging; `curl` or your browser are quick checks.
-- For Python, ensure dependencies are installed into the active venv.
+- Verify installed runtime versions (e.g., `dotnet --info`, `java -version`, `python --version`, `node -v`).
+- If Python dependency management is required, prefer `pip` in a virtualenv or use `poetry` / `pipx`.
+- If you want to containerize services, add Dockerfiles and a `docker-compose.yml` for easier orchestration.
 
 ---
+
+## Contributing
+
+Contributions welcome. Add tests and update this README when adding new functionality or services.
+
+---
+
+License: MIT (add a LICENSE file if desired)
